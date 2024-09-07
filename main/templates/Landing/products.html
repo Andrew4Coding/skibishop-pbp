@@ -1,0 +1,13 @@
+<section class="w-full flex flex-col items-center gap-4">
+    <h2 class="font-bold text-2xl">Search Your Sigma Products!</h2>
+    {% include "components/input.html" with class="w-[500px]" %}
+    <main class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+        {% if products %}
+            {% for product in products %}
+                {% include "Landing/components/product.html" %}                
+            {% endfor %}
+        {% else %}
+            <p>No products available.</p>
+        {% endif %}
+    </main>
+</section>

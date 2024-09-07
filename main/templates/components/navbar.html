@@ -1,34 +1,11 @@
 <nav
-    style="
-        display: flex
-        flex-direction: column;
-        margin-bottom: 20px;
-    "
+    class="flex justify-between mb-5 gap-2"
 >
-    <div
-        style="
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        "
-    >        
-        <img
-            src="https://cdn-icons-png.flaticon.com/512/181/181591.png"
-            alt="Logo"
-            style="
-                width: 40px;
-            "
-        >
-        <h1
-            style="
-                margin: 0;
-                font-size: 2.5rem;
-            "
-        >SKIBISHOP</h1>
+    <h1 class="m-0 text-4xl font-extrabold">skibishop_</h1>
+    <div class="flex gap-20 items-center font-bold">
+        <a href="" clas="hover:scale-105">Home</a>        
+        <a href="" clas="hover:scale-105">Today's Deal</a>        
+        <a href="" clas="hover:scale-105">Admin</a>        
     </div>
-    <p
-        style="
-            margin: 0;
-        "
-    >Made with 🤪 Brainrot 🤪 by Andrew Devito Aryo - 2306152494 - PBP F</p>
+    {% include "components/button.html" with text="Login"%}
 </nav>
