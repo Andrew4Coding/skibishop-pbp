@@ -42,6 +42,10 @@ Check out the live version here: [Skibishop Webpage](http://andrew-devito-skibis
 
 ### 🔄 Alur Django
 
+![DJANGO FLOW DIAGRAM - Page 1](https://github.com/user-attachments/assets/89cb8dfe-ac91-4428-a613-755995ccdd60)
+
+Bagan alur request pada web aplikasi Django dimulai dari client (browser) yang mengirimkan request ke server. Pertama, **`urls.py`** memetakan URL yang diminta ke fungsi yang sesuai di **`views.py`**. Di **`views.py`**, request diproses dan, jika diperlukan, berinteraksi dengan **`models.py`** untuk mengambil atau menyimpan data dari database. Setelah data diproses di **`views.py`**, template HTML (biasanya di folder **templates**) dirender dan hasilnya dikembalikan ke client sebagai respon. Jadi, **`urls.py`** mengarahkan request, **`views.py`** memproses logika, **`models.py`** mengelola data, dan berkas **HTML** menampilkan hasil kepada pengguna.
+
 ### 🔧 Fungsi Git
 
 Git berfungsi sebagai sistem kontrol versi (Version Control System) yang memungkinkan pengembang perangkat lunak untuk melacak setiap perubahan kode secara terperinci. Dengan Git, tim pengembang dapat bekerja secara kolaboratif pada proyek yang sama, mengelola cabang (branch) yang berbeda untuk fitur baru, memperbaiki bug, dan menggabungkan perubahan (merge) dengan aman. Git juga memungkinkan rollback ke versi sebelumnya jika terjadi kesalahan, sehingga meminimalisir risiko dalam pengembangan perangkat lunak. Dengan kata lain, Git membantu menjaga integritas kode dan memastikan tim dapat bekerja secara efisien dalam proyek yang kompleks.
