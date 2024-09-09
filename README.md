@@ -1,6 +1,7 @@
 # SKIBISHOP
 E-Commerce Web Application for True Sigma
 
+
 ### ⚙️ Tech Stack
 - **Backend**: Django
 - **Styling**: TailwindCSS CDN
