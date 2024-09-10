@@ -42,8 +42,7 @@ Check out the live version here: [Skibishop Webpage](http://andrew-devito-skibis
    - Terakhir, buat file `README.md` yang berisi deskripsi proyek, langkah-langkah implementasi, serta tautan menuju aplikasi yang sudah di-deploy di PWS. Sertakan juga jawaban untuk pertanyaan yang relevan tentang Django dan fungsionalitasnya.
 
 ### 🔄 Alur Django
-
-![DJANGO FLOW DIAGRAM - Page 1](https://github.com/user-attachments/assets/89cb8dfe-ac91-4428-a613-755995ccdd60)
+![Django Flow](https://github.com/user-attachments/assets/f7bcf8d8-7192-4dd9-b10c-6aad7ea7f06d)
 
 Bagan alur request pada web aplikasi Django dimulai dari client (browser) yang mengirimkan request ke server. Pertama, **`urls.py`** memetakan URL yang diminta ke fungsi yang sesuai di **`views.py`**. Di **`views.py`**, request diproses dan, jika diperlukan, berinteraksi dengan **`models.py`** untuk mengambil atau menyimpan data dari database. Setelah data diproses di **`views.py`**, template HTML (biasanya di folder **templates**) dirender dan hasilnya dikembalikan ke client sebagai respon. Jadi, **`urls.py`** mengarahkan request, **`views.py`** memproses logika, **`models.py`** mengelola data, dan berkas **HTML** menampilkan hasil kepada pengguna.
 
