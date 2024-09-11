@@ -1,6 +1,10 @@
 # SKIBISHOP
 E-Commerce Web Application for True Sigma
 
+### 🧑‍🦰 Author
+Name      : Andrew Devito Aryo
+NPM       : 2306152494
+Kelas     : PBP F
 
 ### ⚙️ Tech Stack
 - **Backend**: Django
@@ -18,7 +22,7 @@ Check out the live version here: [Skibishop Webpage](http://andrew-devito-skibis
 ### 🛠️ Langkah Pengimplementasian
 
 1. **Membuat sebuah proyek Django baru.**
-   - Langkah pertama adalah inisialisasi proyek Django baru dengan perintah `django-admin startproject [nama_proyek]`. Ini akan membuat struktur direktori dasar yang dibutuhkan untuk proyek Django.
+   - Langkah pertama adalah inisialisasi proyek Django baru dengan perintah `django-admin startproject skibishop`. Ini akan membuat struktur direktori dasar yang dibutuhkan untuk proyek Django.
 
 2. **Membuat aplikasi dengan nama main pada proyek tersebut.**
    - Setelah proyek dibuat, aplikasi dengan nama "main" harus ditambahkan menggunakan perintah `python manage.py startapp main`. Aplikasi ini akan berisi semua logika dan fitur yang akan dikembangkan.
