@@ -1,9 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Product
+from main.forms import ProductEntryForm
 
 # Create your views here.
 def show_model(request):
     model = Product.objects.all()
+
+    print(model)
 
     example_products = [
         {
@@ -61,7 +64,17 @@ def show_model(request):
     context = {
         'name': 'Andrew Devito Aryo',
         'app_name': 'Skibishop',
-        'products': example_products,
+        'products': model,
     }
 
     return render(request, 'main.html', context)
+
+def create_product_form(request):
+    form = ProductEntryForm(request.POST or None)
+
+    if form.is_valid():
+        form.save()
+        return redirect('main:show_model')
+    
+    context = {'form': form}
+    return render(request, 'Add/create_product.html', context)
