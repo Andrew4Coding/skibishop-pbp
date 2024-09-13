@@ -2,9 +2,9 @@
 E-Commerce Web Application for True Sigma
 
 ### 🧑‍🦰 Author
-Name      : Andrew Devito Aryo
-NPM       : 2306152494
-Kelas     : PBP F
+- Name      : Andrew Devito Aryo
+- NPM       : 2306152494
+- Kelas     : PBP F
 
 ### ⚙️ Tech Stack
 - **Backend**: Django
