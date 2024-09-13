@@ -15,7 +15,7 @@ E-Commerce Web Application for True Sigma
 ### 🪁 Deployment
 Check out the live version here: [Skibishop Webpage](http://andrew-devito-skibishop.pbp.cs.ui.ac.id/)
 
-### Archive Tugas
+### 📚 Archive Tugas
 - [Tugas 2 PBP 2024/2025](https://github.com/Andrew4Coding/skibishop-pbp/wiki/Tugas-2-PBP-2024-2025)
 - [Tugas 3 PBP 2024/2025](https://github.com/Andrew4Coding/skibishop-pbp/wiki/Tugas-3-PBP-2024-2025)
 ---
