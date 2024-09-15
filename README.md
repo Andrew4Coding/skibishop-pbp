@@ -60,21 +60,7 @@ Jika kita tidak menambahkan `csrf_token` pada form Django, penyerang dapat membu
 ### 1. Membuat Input Form untuk Menambahkan Objek Model
 
 **Langkah-langkah**:
-1. **Buat Model**: Jika belum ada, buat model yang ingin ditambahkan. Sebagai contoh, misalnya kita menggunakan model bernama `Item`:
-    ```python
-    # models.py
-    from django.db import models
-
-    class Item(models.Model):
-        name = models.CharField(max_length=100)
-        description = models.TextField()
-        created_at = models.DateTimeField(auto_now_add=True)
-
-        def __str__(self):
-            return self.name
-    ```
-
-2. **Buat Form di Django**: Buat form untuk model `Item` dengan menggunakan `ModelForm`.
+1. **Buat Form di Django**: Buat form untuk model `Item` dengan menggunakan `ModelForm`.
     ```python
     # forms.py
     from django import forms
@@ -86,7 +72,7 @@ Jika kita tidak menambahkan `csrf_token` pada form Django, penyerang dapat membu
             fields = ['name', 'description']
     ```
 
-3. **Buat View untuk Input Form**: Buat view untuk menampilkan dan memproses form input.
+2. **Buat View untuk Input Form**: Buat view untuk menampilkan dan memproses form input.
     ```python
     # views.py
     from django.shortcuts import render, redirect
@@ -104,7 +90,7 @@ Jika kita tidak menambahkan `csrf_token` pada form Django, penyerang dapat membu
         return render(request, 'add_item.html', {'form': form})
     ```
 
-4. **Buat Template HTML**: Buat template HTML untuk menampilkan form.
+3. **Buat Template HTML**: Buat template HTML untuk menampilkan form.
     ```html
     <!-- templates/add_item.html -->
     <h2>Add New Item</h2>
@@ -115,7 +101,7 @@ Jika kita tidak menambahkan `csrf_token` pada form Django, penyerang dapat membu
     </form>
     ```
 
-5. **Tambahkan URL Routing untuk Form**: Tambahkan URL untuk form di `urls.py`.
+4. **Tambahkan URL Routing untuk Form**: Tambahkan URL untuk form di `urls.py`.
     ```python
     # urls.py
     from django.urls import path
@@ -130,52 +116,36 @@ Jika kita tidak menambahkan `csrf_token` pada form Django, penyerang dapat membu
 
 **Langkah-langkah**:
 
-1. **Buat View untuk Format JSON dan XML**: Kita akan menggunakan Django `JsonResponse` dan `HttpResponse` untuk menampilkan data dalam format JSON dan XML.
-
+1. **Buat View untuk Format JSON dan XML**:
     - **View untuk JSON**:
       ```python
-      # views.py
-      from django.http import JsonResponse
-      from .models import Item
-
-      def item_list_json(request):
-          items = list(Item.objects.values())
-          return JsonResponse(items, safe=False)
+      def show_all_json(_):
+          data = Product.objects.all()
+          return HttpResponse(serializers.serialize("json", data), content_type="application/json")
       ```
 
     - **View untuk XML**:
       ```python
-      # views.py
-      from django.http import HttpResponse
-      from django.core import serializers
-      from .models import Item
-
-      def item_list_xml(request):
-          items = Item.objects.all()
-          data = serializers.serialize('xml', items)
-          return HttpResponse(data, content_type='application/xml')
+      def show_all_xml(_):
+          data = Product.objects.all()
+          return HttpResponse(serializers.serialize("xml", data), content_type="application/xml")
       ```
 
     - **View untuk JSON by ID**:
       ```python
-      # views.py
-      from django.shortcuts import get_object_or_404
-
-      def item_detail_json(request, id):
-          item = get_object_or_404(Item, id=id)
-          return JsonResponse({'id': item.id, 'name': item.name, 'description': item.description})
+      def show_id_json(_, id: str):
+          data = Product.objects.filter(id=id)
+          return HttpResponse(serializers.serialize("json", data), content_type="application/json")
       ```
 
     - **View untuk XML by ID**:
       ```python
-      # views.py
-      def item_detail_xml(request, id):
-          item = get_object_or_404(Item, id=id)
-          data = serializers.serialize('xml', [item])
-          return HttpResponse(data, content_type='application/xml')
+      def show_id_xml(_, id: str):
+          data = Product.objects.filter(id=id)
+          return HttpResponse(serializers.serialize("xml", data), content_type="application/xml")
       ```
 
-### 3. Membuat Routing URL untuk Masing-masing View
+2. Membuat Routing URL untuk Masing-masing View
 
 Tambahkan URL routing untuk masing-masing views dalam format JSON dan XML ke dalam `urls.py`.
 ```python
@@ -184,11 +154,24 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    # URL untuk JSON dan XML List
-    path('json/', views.item_list_json, name='item_list_json'),
-    path('xml/', views.item_list_xml, name='item_list_xml'),
-
-    # URL untuk JSON dan XML Detail by ID
-    path('json/<str:id>/', views.item_detail_json, name='item_detail_json'),
-    path('xml/<str:id>/', views.item_detail_xml, name='item_detail_xml'),
+    path('', show_model, name='show_model'),
+    path('add/', create_product_form, name='create_product_form'),
+    path('xml/', show_all_xml, name='show_all_xml'),
+    path('xml/<str:id>/', show_id_xml, name='show_id_xml'),
+    path('json/', show_all_json, name='show_all_json'),
+    path('json/<str:id>/', show_id_json, name='show_id_json'),
 ]
+```
+
+### Contoh Hasil API Call dengan Postman
+**JSON All**
+![image](https://github.com/user-attachments/assets/8a37fc24-443b-4d75-b53f-63d52425a348)
+
+**XML All**
+![image](https://github.com/user-attachments/assets/6f1998ca-70c7-4816-8875-4383b39c9452)
+
+**JSON by ID**
+![image](https://github.com/user-attachments/assets/46e4d308-dadf-4ce7-8774-476e75b1b066)
+
+**XML by ID**
+![image](https://github.com/user-attachments/assets/971b37b2-c5e6-4153-8713-d798f8a2a07e)
