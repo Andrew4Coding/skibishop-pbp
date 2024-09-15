@@ -2,9 +2,9 @@
 E-Commerce Web Application for True Sigma
 
 ### 🧑‍🦰 Author
-- Name      : Andrew Devito Aryo
-- NPM       : 2306152494
-- Kelas     : PBP F
+- Name: Andrew Devito Aryo
+- NPM: 2306152494
+- Kelas: PBP F
 
 ### ⚙️ Tech Stack
 - **Backend**: Django
@@ -18,6 +18,7 @@ Check out the live version here: [Skibishop Webpage](http://andrew-devito-skibis
 ### 📚 Archive Tugas
 - [Tugas 2 PBP 2024/2025](https://github.com/Andrew4Coding/skibishop-pbp/wiki/Tugas-2-PBP-2024-2025)
 - [Tugas 3 PBP 2024/2025](https://github.com/Andrew4Coding/skibishop-pbp/wiki/Tugas-3-PBP-2024-2025)
+
 ---
 
 ## Tugas 3 - PBP 2024/2025
@@ -62,14 +63,13 @@ Jika kita tidak menambahkan `csrf_token` pada form Django, penyerang dapat membu
 **Langkah-langkah**:
 1. **Buat Form di Django**: Buat form untuk model `Item` dengan menggunakan `ModelForm`.
     ```python
-    # forms.py
-    from django import forms
-    from .models import Item
-
-    class ItemForm(forms.ModelForm):
+    from django.forms import ModelForm
+    from main.models import Product
+    
+    class ProductEntryForm(ModelForm):
         class Meta:
-            model = Item
-            fields = ['name', 'description']
+            model = Product
+            fields = ['name', 'price', 'description']
     ```
 
 2. **Buat View untuk Input Form**: Buat view untuk menampilkan dan memproses form input.
@@ -92,23 +92,34 @@ Jika kita tidak menambahkan `csrf_token` pada form Django, penyerang dapat membu
 
 3. **Buat Template HTML**: Buat template HTML untuk menampilkan form.
     ```html
-    <!-- templates/add_item.html -->
-    <h2>Add New Item</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Save</button>
+    {% extends 'base.html' %} 
+    {% block content %}
+    <form method="POST">
+      {% csrf_token %}
+      <table>
+        {{ form.as_table }}
+        <tr>
+          <td></td>
+          <td>
+            <input type="submit" value="Add Entry" class="bg-black w-fit py-3 px-10 text-white text-sm font-semibold rounded-[10px] hover:scale-105 duration-300"
+            />
+          </td>
+        </tr>
+      </table>
     </form>
+    {% endblock %}
     ```
 
 4. **Tambahkan URL Routing untuk Form**: Tambahkan URL untuk form di `urls.py`.
     ```python
-    # urls.py
     from django.urls import path
-    from . import views
-
+    from main.views import show_model, create_product_form, show_all_json, show_all_xml, show_id_json, show_id_xml
+    
+    app_name = 'main'
+    
     urlpatterns = [
-        path('add-item/', views.add_item, name='add_item'),
+        path('', show_model, name='show_model'),
+        path('add/', create_product_form, name='create_product_form'),
     ]
     ```
 
@@ -145,25 +156,24 @@ Jika kita tidak menambahkan `csrf_token` pada form Django, penyerang dapat membu
           return HttpResponse(serializers.serialize("xml", data), content_type="application/xml")
       ```
 
-2. Membuat Routing URL untuk Masing-masing View
+2.  **Membuat Routing URL untuk Masing-masing View**
+    Tambahkan URL routing untuk masing-masing views dalam format JSON dan XML ke dalam `urls.py`.
+    ```python
+    # urls.py
+    from django.urls import path
+    from . import views
+    
+    urlpatterns = [
+        path('', show_model, name='show_model'),
+        path('add/', create_product_form, name='create_product_form'),
+        path('xml/', show_all_xml, name='show_all_xml'),
+        path('xml/<str:id>/', show_id_xml, name='show_id_xml'),
+        path('json/', show_all_json, name='show_all_json'),
+        path('json/<str:id>/', show_id_json, name='show_id_json'),
+    ]
+    ```
 
-Tambahkan URL routing untuk masing-masing views dalam format JSON dan XML ke dalam `urls.py`.
-```python
-# urls.py
-from django.urls import path
-from . import views
-
-urlpatterns = [
-    path('', show_model, name='show_model'),
-    path('add/', create_product_form, name='create_product_form'),
-    path('xml/', show_all_xml, name='show_all_xml'),
-    path('xml/<str:id>/', show_id_xml, name='show_id_xml'),
-    path('json/', show_all_json, name='show_all_json'),
-    path('json/<str:id>/', show_id_json, name='show_id_json'),
-]
-```
-
-### Contoh Hasil API Call dengan Postman
+### 📪 Contoh Hasil API Call dengan Postman
 **JSON All**
 ![image](https://github.com/user-attachments/assets/8a37fc24-443b-4d75-b53f-63d52425a348)
 
