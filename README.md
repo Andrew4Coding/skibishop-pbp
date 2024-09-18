@@ -25,15 +25,15 @@ Check out the live version here: [Skibishop Webpage](http://andrew-devito-skibis
 
 ### Jelaskan mengapa kita memerlukan data delivery dalam pengimplementasian sebuah platform?
 
-Data delivery penting karena memungkinkan komunikasi antara berbagai komponen dalam platform. Data delivery memastikan bahwa informasi dapat dikirimkan dengan aman, cepat, dan efisien dari satu titik ke titik lain, baik antar server, klien, maupun antar aplikasi. Tanpa mekanisme ini, platform tidak dapat berfungsi secara maksimal, karena data yang dibutuhkan untuk melakukan berbagai tugas tidak dapat dipertukarkan dengan benar.
+Data delivery memungkinkan komunikasi antara berbagai komponen dalam platform. Data delivery memastikan informasi dapat dikirimkan dengan aman, cepat, dan efisien dari satu titik ke titik lain, baik antar server, klien, maupun antar aplikasi. Tanpa mekanisme ini, platform tidak dapat berfungsi secara maksimal, karena data yang dibutuhkan untuk melakukan berbagai tugas tidak dapat dipertukarkan dengan benar.
 
 ---
 
 ### Menurutmu, mana yang lebih baik antara XML dan JSON? Mengapa JSON lebih populer dibandingkan XML?
 
-Secara umum, JSON lebih disukai dibandingkan XML untuk pengiriman data dalam pengembangan aplikasi modern. Alasannya adalah sebagai berikut:
+Secara umum, JSON lebih sering digunakan jika dibandingkan dengan XML untuk pengiriman data dalam pengembangan aplikasi modern. Alasannya adalah sebagai berikut:
 
-- **Keringkasan**: JSON lebih ringkas dibandingkan XML, karena tidak memerlukan tag penutup yang berulang-ulang. Hal ini membuat JSON lebih efisien dalam hal penyimpanan dan pengiriman data.
+- **Keringkasan**: JSON lebih ringkas dibandingkan XML, karena tidak memerlukan tag penutup yang berulang-ulang dan hanya dapat berbentuk array atau object. Hal ini membuat JSON lebih efisien dalam hal penyimpanan dan pengiriman data.
 - **Kemudahan penggunaan**: JSON lebih mudah dibaca dan ditulis, baik oleh manusia maupun oleh mesin, karena menggunakan sintaks yang lebih sederhana.
 - **Dukungan langsung dari JavaScript**: JSON secara alami terintegrasi dengan JavaScript, menjadikannya lebih mudah diimplementasikan dalam aplikasi web.
 
@@ -43,7 +43,7 @@ Walaupun XML menawarkan beberapa fitur tambahan seperti skema untuk validasi dan
 
 ### Jelaskan fungsi dari method `is_valid()` pada form Django dan mengapa kita membutuhkan method tersebut?
 
-Method `is_valid()` pada form Django digunakan untuk memvalidasi data yang dimasukkan ke dalam form. Method ini mengecek apakah data yang di-submit oleh user sesuai dengan aturan validasi yang telah ditentukan di form. Jika data valid, method ini akan mengembalikan `True`, dan data tersebut bisa diproses lebih lanjut (misalnya, disimpan ke database). Jika data tidak valid, method ini mengembalikan `False` dan akan memberikan pesan error yang sesuai.
+Method `is_valid()` pada form Django digunakan untuk memvalidasi data yang dimasukkan ke dalam form. Method ini mengecek apakah data yang di-submit oleh user sesuai dengan aturan validasi yang telah ditentukan di form (Misalnya form tidak kosong dan tidak melebihi maksimal karakter yang didefinisikan pada model Product). Jika data valid, method ini akan mengembalikan `True`, dan data tersebut bisa diproses lebih lanjut (misalnya, disimpan ke database). Jika data tidak valid, method ini mengembalikan `False` dan akan memberikan pesan error yang sesuai.
 
 Tanpa method `is_valid()`, kita tidak bisa memastikan bahwa data yang masuk aman dan sesuai dengan aturan yang telah dibuat. Ini penting untuk menjaga integritas data dan keamanan aplikasi.
 
@@ -61,7 +61,7 @@ Jika kita tidak menambahkan `csrf_token` pada form Django, penyerang dapat membu
 ### 1. Membuat Input Form untuk Menambahkan Objek Model
 
 **Langkah-langkah**:
-1. **Buat Form di Django**: Buat form untuk model `Item` dengan menggunakan `ModelForm`.
+1. **Buat Form di Django**: Buat form untuk model `Product` dengan menggunakan `ModelForm`.
     ```python
     from django.forms import ModelForm
     from main.models import Product
@@ -74,20 +74,15 @@ Jika kita tidak menambahkan `csrf_token` pada form Django, penyerang dapat membu
 
 2. **Buat View untuk Input Form**: Buat view untuk menampilkan dan memproses form input.
     ```python
-    # views.py
-    from django.shortcuts import render, redirect
-    from .forms import ItemForm
-
-    def add_item(request):
-        if request.method == 'POST':
-            form = ItemForm(request.POST)
-            if form.is_valid():
-                form.save()
-                return redirect('item_list')  # Redirect ke halaman daftar item
-        else:
-            form = ItemForm()
-
-        return render(request, 'add_item.html', {'form': form})
+    def create_product_form(request):
+        form = ProductEntryForm(request.POST or None)
+    
+        if form.is_valid():
+            form.save()
+            return redirect('main:show_model')
+        
+        context = {'form': form }
+        return render(request, 'add/create_product.html', context)
     ```
 
 3. **Buat Template HTML**: Buat template HTML untuk menampilkan form.
@@ -120,6 +115,7 @@ Jika kita tidak menambahkan `csrf_token` pada form Django, penyerang dapat membu
     urlpatterns = [
         path('', show_model, name='show_model'),
         path('add/', create_product_form, name='create_product_form'),
+        # Endpoints lainnya
     ]
     ```
 
@@ -173,7 +169,7 @@ Jika kita tidak menambahkan `csrf_token` pada form Django, penyerang dapat membu
     ]
     ```
 
-### 📪 Contoh Hasil API Call dengan Postman
+### Contoh Hasil API Call dengan Postman
 **JSON All**
 ![image](https://github.com/user-attachments/assets/8a37fc24-443b-4d75-b53f-63d52425a348)
 
