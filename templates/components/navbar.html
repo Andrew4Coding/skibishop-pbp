@@ -7,5 +7,7 @@
         <a href="" class="hover:scale-105 hover:">Today's Deal</a>        
         <a href="admin" class="hover:scale-105 hover:">Admin</a>        
     </div>
-    {% include "components/button.html" with text="Login"%}
+    <a href="{% url 'main:login_user' %}">
+        {% include "components/button.html" with text="Login"%}
+    </a>
 </nav>
