@@ -15,25 +15,29 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.
-def show_model(request):
-    model = Product.objects.all()
+@login_required(login_url='main:login')
+def show_main(request):
+    model = Product.objects.filter(user=request.user)
 
     context = {
         'name': 'Andrew Devito Aryo',
         'app_name': 'Skibishop',
         'products': model,
+        'last_login': request.COOKIES.get('last_login')
     }
 
     return render(request, 'index.html', context)
 
 
-@login_required(login_url="main:login_user")
+@login_required(login_url="main:login")
 def create_product_form(request):
     form = ProductEntryForm(request.POST or None)
 
-    if form.is_valid():
-        form.save()
-        return redirect('main:show_model')
+    if form.is_valid() and request.method == 'POST':
+        product_entry = form.save(commit=False)
+        product_entry.user = request.user
+        product_entry.save()
+        return redirect('main:show_main')
     
     context = {'form': form}
     return render(request, 'add/create_product.html', context)
@@ -74,13 +78,16 @@ def register(request):
 
 
 def login_user(request):
+   if (request.user.is_authenticated):
+        return redirect('main:show_main')
+   
    if request.method == 'POST':
       form = AuthenticationForm(data=request.POST)
 
       if form.is_valid():
             user = form.get_user()
             login(request, user)
-            response = HttpResponseRedirect(reverse('main:show_model'))
+            response = HttpResponseRedirect(reverse('main:show_main'))
             response.set_cookie('last_login', datetime.datetime.now())
             return response
 
@@ -95,3 +102,6 @@ def logout_user(request):
     response = HttpResponseRedirect(reverse('main:login'))
     response.delete_cookie('last_login')
     return response
+
+def show_profile(request):
+    return render(request, 'profile.html')
