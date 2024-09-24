@@ -9,7 +9,7 @@ E-Commerce Web Application for True Sigma
 ### ⚙️ Tech Stack
 - **Backend**: Django
 - **Styling**: TailwindCSS CDN
-- **Font**: Manrope
+- **Font**: Poppins
 - **Web Service**: Pacil Web Service (PWS)
 
 ### 🪁 Deployment
