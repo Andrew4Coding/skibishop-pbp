@@ -224,7 +224,28 @@ Terakhir, pastikan semua view dipanggil melalui `urls.py`:
 - **Membuat Dummy Data**
   Untuk membuat dummy data, kita perlu login sebagai user yang kita inginkan. Setelah itu, kita bisa menambahkan dummy data baru melalui POST form yang telah dibuat pada Tugas 3 sebelumnya.
 - **Bukti Pembuatan Akun dan Dummy Data**
-  (Image goes here)
+  <div>
+    <h3>User 1 (DekDepe) </h3>
+    <img 
+      src="https://github.com/user-attachments/assets/a357c291-a12d-4d91-89f4-721d39da98ee"
+      width=500
+      />
+    <img 
+      src="https://github.com/user-attachments/assets/fa428bf0-32b2-4249-8071-8751b16b6656"
+      width=500
+    />
+  </div>
+  <div>
+    <h3>User 1 (DekDepe) </h3>
+    <img 
+      src="https://github.com/user-attachments/assets/5e00c4de-5267-4cdb-932a-7085fe8bf43f"
+      width=500
+      />
+    <img 
+      src="https://github.com/user-attachments/assets/173b4d77-9882-46bc-aac2-b34c001a6a59"
+      width=500
+    />
+  </div>
 ---
 
 ### 3. **Menghubungkan Model `Product` dengan `User`**
