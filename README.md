@@ -189,11 +189,11 @@ Django mengingat pengguna yang sudah login menggunakan **sessions** dan **cookie
           return response
      ```
    2. Tambahkan link logout di template untuk memudahkan user logout melalui logout button:
-   ```html
-      <a href="{% url 'main:logout' %}">
-          {% include "components/button.html" with text="Logout"%}
-      </a>
-   ```
+      ```html
+        <a href="{% url 'main:logout' %}">
+            {% include "components/button.html" with text="Logout"%}
+        </a>
+      ```
 
 Terakhir, pastikan semua view dipanggil melalui `urls.py`:
 ```python
