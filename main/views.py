@@ -19,11 +19,18 @@ from django.contrib.auth.decorators import login_required
 def show_main(request):
     model = Product.objects.filter(user=request.user)
 
+    cookie = request.COOKIES.get('last_login')
+
+    if cookie:
+        last_login = datetime.datetime.strptime(cookie, "%Y-%m-%d %H:%M:%S.%f")
+    else:
+        return redirect('main:login')
+        
     context = {
         'name': 'Andrew Devito Aryo',
         'app_name': 'Skibishop',
         'products': model,
-        'last_login': request.COOKIES.get('last_login')
+        'last_login': last_login
     }
 
     return render(request, 'index.html', context)

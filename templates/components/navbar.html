@@ -3,16 +3,16 @@
 <nav class="px-5 md:px-20 py-5 border-b-2">
     <div class="flex justify-between items-center">
         <div class="flex gap-5 items-center">
-            <img src="{% static 'images/skibiicon.png' %}" alt="logo" class="w-10 object-contain">
+            <img src="{% static 'images/skibiicon.png' %}" alt="logo" class="w-8 sm:w-10 object-contain">
             <h1 class="font-bold text-2xl">skibishop</h1>
         </div>
-        <div class="hidden md:flex gap-8 justify-center font-semibold text-sm">
+        <div class="hidden xl:flex gap-8 justify-center font-semibold text-sm">
             <a href="" class="hover:scale-105 font-extrabold text-[#7C00FE]">Home</a>        
             <a href="" class="hover:scale-105">Products</a>        
             <a href="" class="hover:scale-105">Categories</a>
             <a href="" class="hover:scale-105">Cart</a>
         </div>
-        <div class="hidden md:flex gap-5 min-w-[450px] justify-end items-center">
+        <div class="hidden lg:flex gap-5 min-w-[450px] justify-end items-center">
             <div>
                 <p class="text-sm text-wrap text-right font-semibold">
                     Hello, {{ user.username }}
@@ -34,7 +34,7 @@
                 </a>
             {% endif %}
         </div>
-        <div class="md:hidden">
+        <div class="lg:hidden">
             <button id="menu-btn" class="focus:outline-none">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
@@ -53,7 +53,7 @@
         </div>
         <div class="flex flex-col gap-2 items-end">
             <div
-                class="flex gap-2 items-center"
+                class="flex gap-2 items-end flex-col-reverse"
             >                
                 <div>
                     <p class="text-sm text-wrap text-right font-semibold">

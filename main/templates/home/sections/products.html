@@ -7,13 +7,13 @@
         </a>
         {% include "components/input.html" with class="w-full md:w-[500px]" %}
     </div>
-    <main class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
-        {% if products %}
+    {% if products %}
+        <main class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
             {% for product in products %}
                 {% include "home/elements/product.html" %}                
             {% endfor %}
-        {% else %}
-            <p>No products available.</p>
-        {% endif %}
-    </main>
+        </main>
+    {% else %}
+        <p>No products available.</p>
+    {% endif %}
 </section>
