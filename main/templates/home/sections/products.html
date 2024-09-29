@@ -1,12 +1,11 @@
-<section class="w-full flex flex-col items-center gap-4">
-    <h2 class="font-bold text-2xl text-center">Search Your Sigma Products!</h2>
+<section class="w-full flex flex-col items-center gap-4 px-10 md:px-20 py-10">
     <div
-        class="flex gap-4"
+        class="flex flex-col-reverse md:flex-row gap-4 justify-end"
     >
-        {% include "components/input.html" with class="w-full md:w-[500px]" %}
         <a href="{% url 'main:create_product_form'%}">
-            {% include "components/button.html" with text="Add Item" %}
+            {% include "components/button.html" with text="+ Create" %}
         </a>
+        {% include "components/input.html" with class="w-full md:w-[500px]" %}
     </div>
     <main class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
         {% if products %}

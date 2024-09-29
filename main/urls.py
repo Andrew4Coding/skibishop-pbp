@@ -14,4 +14,6 @@ urlpatterns = [
     path('login/', login_user, name='login'),
     path('logout/', logout_user, name='logout'),
     path('profile/', show_profile, name='profile'),
+    path('delete/<uuid:id>', delete_product, name='delete'),
+    path('edit/<uuid:id>', edit_product, name='edit'),
 ]

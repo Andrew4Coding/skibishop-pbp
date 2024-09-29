@@ -1,22 +1,26 @@
-<a href="json/{{product.id}}">
-	<div
-		class="p-10 px-5 pt-5 text-black hover:shadow-xl  rounded-xl cursor-pointer transition-all duration-300 flex flex-col gap-5 max-w-[300px]"
-	>
-		<div class="w-full h-[200px] bg-[#F6F6F6] rounded-xl p-8 relative">
-			<img 
-				src="https://pngimg.com/d/macbook_PNG61.png"
-				class="w-full object-contain h-full rounded-xl"
-			/>
-			<button
-				class="bg-black text-white w-10 h-10 rounded-full absolute top-5 right-5 flex items-center justify-center hover:scale-105"
-			>+</button>
-		</div>
-			<div
-				class="flex flex-col "
-			>
-				<h3 class="m-0 font-semibold text-lg">{{ product.name }}</h3>
-				<p class="text-xs text-[#95979D]">{{product.description}}</p>
-				<h1 class="m-0 text-2xl font-bold my-3">Rp{{product.price}}</h1>
-			</div>
+<div
+	class="rounded-3xl w-full md:w-[260px] border-[1px] border-black/10 shadow-xl p-5 text-black hover:shadow-xl cursor-pointer transition-all duration-300 flex flex-col gap-5"
+>
+	<div class="w-full h-[200px] bg-[#F6F6F6] rounded-xl p-8 relative">
+		<img 
+			src="https://pngimg.com/d/macbook_PNG61.png"
+			class="w-full object-contain h-full rounded-xl"
+		/>
 	</div>
-</a>
+		<div
+			class="flex flex-col "
+		>
+			<h3 class="m-0 font-medium text-sm">{{ product.name }}</h3>
+			<h1 class="m-0 text-xl font-bold">Rp{{product.price}}</h1>
+			<h3 class="m-0 font-medium text-sm text-[#737373]">by AnduStore</h3>
+			<h3 class="font-medium text-sm">4k Terjual</h3>
+			<div class="flex my-2 gap-2" >
+				<a href={% url 'main:edit' product.pk %} class="w-full">
+					{% include "components/button.html" with text="Edit" class="bg-[#7C00FE] w-full py-3 px-5 text-white text-sm font-semibold rounded-3xl h-full hover:scale-105 duration-300"  %}
+				</a>
+				<a href={% url 'main:delete' product.pk %} class="w-full">
+					{% include "components/button.html" with text="Delete" class="bg-[#D91656] w-full py-3 px-5 text-white text-sm font-semibold rounded-3xl h-full hover:scale-105 duration-300"  %}
+				</a>
+			</div>
+		</div>
+</div>

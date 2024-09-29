@@ -39,8 +39,10 @@ def create_product_form(request):
         product_entry.save()
         return redirect('main:show_main')
     
-    context = {'form': form}
-    return render(request, 'add/create_product.html', context)
+    context = {'form': form, 
+                'last_login': request.COOKIES.get('last_login')
+               }
+    return render(request, 'crud/create_product.html', context)
 
 def show_all_xml(_):
     data = Product.objects.all()
@@ -105,3 +107,26 @@ def logout_user(request):
 
 def show_profile(request):
     return render(request, 'profile.html')
+
+def delete_product(request, id):
+    product = Product.objects.get(pk = id)
+    product.delete()
+    return HttpResponseRedirect(reverse('main:show_main'))
+
+def edit_product(request, id):
+    # Get mood entry berdasarkan id
+    product = Product.objects.get(pk = id)
+
+    # Set mood entry sebagai instance dari form
+    form = ProductEntryForm(request.POST or None, instance=product)
+
+    if form.is_valid() and request.method == "POST":
+        # Simpan form dan kembali ke halaman awal
+        form.save()
+        return HttpResponseRedirect(reverse('main:show_main'))
+
+    context = {
+        'form': form, 
+        'last_login': request.COOKIES.get('last_login')
+    }
+    return render(request, "crud/edit_product.html", context)

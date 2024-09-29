@@ -1,17 +1,13 @@
-<section>
-    <div class="bg-gradient-to-br from-black/20 to-white h-[90vh] items-center justify-center rounded-xl relative overflow-hidden">
-        <img
-            src="https://images.unsplash.com/photo-1616088410192-d1b123712994?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8bWluaW1hbCUyMGJhY2tncm91bmR8ZW58MHx8MHx8fDA%3D"
-            class="absolute w-full h-full object-cover z-0"
-        >
-        <div
-            class="absolute z-10 w-full h-full flex items-center justify-center bg-white/20 backdrop-blur-lg"
-        >
-            <div class="text-center flex flex-col items-center gap-2">
-                <h1 class="text-2xl  md:text-6xl font-extrabold">welcome to skibishop</h1>
-                <p class="text-sm md:text-lg font-semibold">The best place to find the sigma products</p>
-                {% include "components/button.html" with text="Explore" %}
-            </div>
-        </div>
+{% load static %}
+<section class="bg-[#F9F9F9] h-[90vh] flex items-center rounded-xl overflow-hidden relative px-20">
+    <div class="font-bold text-6xl z-20">
+        <h1>FIND</h1>
+        <h1>WHAT SUITES</h1>
+        <h1>YOUR 
+            <span class="bg-gradient-to-r from-[#7C00FE] to-[#D91656] bg-clip-text text-transparent">
+                STYLE
+            </span>
+        </h1>
     </div>
+    <img src={% static "images/asset-woman-pose.png" %} alt="asset1" class="absolute h-[90%] bottom-0 right-0 xl:right-32 object-contain object-bottom">
 </section>
