@@ -17,7 +17,7 @@ Check out the live version here: [Skibishop Webpage](http://andrew-devito-skibis
 ### 📚 Archive Tugas
 - [Tugas 2 PBP 2024/2025](https://github.com/Andrew4Coding/skibishop-pbp/wiki/Tugas-2-PBP-2024-2025)
 - [Tugas 3 PBP 2024/2025](https://github.com/Andrew4Coding/skibishop-pbp/wiki/Tugas-3-PBP-2024-2025)
-
+- [Tugas 4 PBP 2024/2025](https://github.com/Andrew4Coding/skibishop-pbp/wiki/Tugas-4-PBP-2024-2025)
 ---
 
 ## Tugas 5 - PBP 2024/2025
