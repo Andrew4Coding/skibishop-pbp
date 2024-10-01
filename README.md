@@ -21,10 +21,6 @@ Check out the live version here: [Skibishop Webpage](http://andrew-devito-skibis
 ---
 
 ## Tugas 5 - PBP 2024/2025
-Berikut adalah jawaban lengkap dalam format README markdown.
-
----
-
 ## 1. Urutan Prioritas CSS Selector
 Ketika terdapat beberapa CSS selector yang diterapkan pada elemen HTML yang sama, CSS menggunakan aturan prioritas (specificity) untuk menentukan selector mana yang dipakai. Urutan prioritasnya adalah sebagai berikut:
 
@@ -47,13 +43,6 @@ div { color: red; }
 ```
 Maka elemen tersebut akan memiliki warna **biru** karena **ID selector** memiliki prioritas tertinggi.
 
-### Penjelasan Spesifisitas:
-- **Inline styles**: 1000 poin.
-- **ID selector**: 100 poin.
-- **Class selector**, **attribute selector**, dan **pseudo-class**: 10 poin.
-- **Tag selector** dan **pseudo-element**: 1 poin.
-
----
 
 ## 2. Mengapa Responsive Design Penting?
 **Responsive design** adalah pendekatan dalam desain web di mana tampilan halaman web dapat menyesuaikan diri dengan berbagai ukuran dan orientasi layar perangkat pengguna. Konsep ini penting karena pengguna mengakses web dari berbagai perangkat seperti komputer desktop, tablet, dan ponsel pintar.
@@ -107,24 +96,91 @@ Flexbox (Flexible Box) adalah metode layout yang digunakan untuk mengatur elemen
 ```css
 .container {
     display: flex;
-    justify-content: space-between; /* Membagi elemen secara merata */
+    justify-content: center; /* Meletakan child element di tengah secara horizontal */
 }
 ```
 
 ### **Grid Layout**
-Grid Layout adalah sistem layout dua dimensi yang memungkinkan pengembang untuk membuat desain halaman yang lebih kompleks, dengan baris dan kolom. Grid Layout sangat cocok untuk mengatur elemen dalam struktur grid yang rapi.
+Grid Layout adalah sistem layout dua dimensi yang memungkinkan developer untuk membuat desain halaman yang lebih kompleks dengan baris dan kolom. Grid Layout sangat cocok untuk mengatur elemen dalam struktur grid agar rapih dan memiliki lebar kolom yang tetap.
 
 #### Kegunaan Grid Layout:
 - Membuat layout dua dimensi (baris dan kolom).
-- Cocok untuk desain yang lebih kompleks dan berstruktur.
+- Cocok untuk desain yang terstruktur dan memerlukan kedinamisan dalam mengatur lebar kolom dan barisnya.
 
 #### Contoh Penggunaan Grid Layout:
 ```css
 .container {
     display: grid;
-    grid-template-columns: 1fr 2fr; /* Dua kolom, kolom kedua dua kali lebih besar */
+    grid-template-columns: 1fr 2fr; /* Dua kolom, kolom kedua dua lebih besar 2 kali lipat dari yang kiri*/
     grid-gap: 10px; /* Jarak antar kolom */
 }
 ```
 
 ---
+
+# Langkah-langkah Implementasi Checklist
+## Implementasi Fungsi Edit dan Hapus
+### 1. **Buat view untuk Edit dan Delete**:
+  ```python
+  # View untuk menghapus produk
+  def delete_product(request, id):
+    # Mengambil produk yang memiliki id yang diinginkan**
+    product = Product.objects.get(pk = id)
+
+    # Menghapus produk sesuai dengan id yang dikirim
+    product.delete()
+
+    # Kembali ke halaman main
+    return HttpResponseRedirect(reverse('main:show_main'))
+
+  # View untuk mengedit produk
+  def edit_product(request, id):
+    # Mengambil produk yang memiliki id yang diinginkan
+    product = Product.objects.get(pk = id)
+
+    # Mengambil data produk dan mengirimkan nya ke form edit produ
+    form = ProductEntryForm(request.POST or None, instance=product)
+
+    if form.is_valid() and request.method == "POST":
+        # Jika form di submit, maka save dan kembali ke main
+        form.save()
+        return HttpResponseRedirect(reverse('main:show_main'))
+
+    # Kirimkan data form ke template melalui context
+    context = {
+        'form': form, 
+        'last_login': request.COOKIES.get('last_login')
+    }
+    return render(request, "crud/edit_product.html", context)
+  ```
+### 2. Kustomisasi desain pada template HTML yang telah dibuat pada tugas-tugas sebelumnya menggunakan CSS atau CSS framework
+Sebelum memulai menggunakan Tailwind pada project, kita perlu menginisiasi pemanggilan Tailwind melalui CDN (Content Distribution Network). CDN memungkinkan untuk memakai fitur styling yang disediakan oleh Tailwind tanpa perlu mendownload atau mengkonfigurasi Tailwind pada direktori projek. CDN sendiri diletakkan pada `base.html`. Tailwind dipanggil dengan cara:
+```html
+  .....
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script>
+            tailwind.config = {
+                theme: {
+                        extend: {
+                            fontFamily: {
+                                'Manrope': ['Manrope', 'sans-serif'],
+                                'Poppins': ['Poppins', 'sans-serif'],
+                                'Inter': ['Inter', 'sans-serif'],
+                            },
+                    }
+                }
+            }
+        </script>
+    ....
+```
+
+Setelah menginisiasi Tailwind, ada beberapa component yang dikustomisasi designnya saat mengerjakan tugas ini, misalnya **Login, Register, Tambah Produk, Edit Produk, Daftar Produk, Card Product, dan lain-lain**. Berikut contoh implementasi untuk masing-masing component dapat diakses pada link-link berikut ini:
+- [Login Page](https://github.com/Andrew4Coding/skibishop-pbp/blob/master/main/templates/auth/login.html)
+- [Register Page](https://github.com/Andrew4Coding/skibishop-pbp/blob/master/main/templates/auth/register.html)
+- [Create Product](https://github.com/Andrew4Coding/skibishop-pbp/blob/master/main/templates/crud/create_product.html)
+- [Edit Product](https://github.com/Andrew4Coding/skibishop-pbp/blob/master/main/templates/crud/edit_product.html)
+- [Tampilan Product](https://github.com/Andrew4Coding/skibishop-pbp/blob/master/main/templates/home/sections/products.html)
+- [Card Product](https://github.com/Andrew4Coding/skibishop-pbp/blob/master/main/templates/home/elements/product.html)
+- [Navigation Bar](https://github.com/Andrew4Coding/skibishop-pbp/blob/master/templates/components/navbar.html)
+
+Semua kustomisasi dilakukan menggunakan TailwindCSS dan style dipanggil secara langsung dan inline melalui Tailwind CDN
