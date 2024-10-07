@@ -6,14 +6,16 @@
             {% include "components/button.html" with text="+ Create" %}
         </a>
         {% include "components/input.html" with class="w-full md:w-[500px]" %}
+        <button
+            data-modal-target="crudModal"
+            data-modal-toggle="crudModal"
+            class='bg-[#7C00FE] w-fit py-3 px-10 text-white text-sm font-semibold rounded-3xl h-full hover:scale-105 duration-300'
+            onclick="showModal();"
+        >
+            + Create (AJAX)
+        </button>
     </div>
-    {% if products %}
-        <main class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
-            {% for product in products %}
-                {% include "home/elements/product.html" %}                
-            {% endfor %}
-        </main>
-    {% else %}
-        <p>No products available.</p>
-    {% endif %}
+    <div id="product-container"></div>
+
+    {% include "crud/create_product_modal.html" %}
 </section>

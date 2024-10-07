@@ -16,4 +16,5 @@ urlpatterns = [
     path('profile/', show_profile, name='profile'),
     path('delete/<uuid:id>', delete_product, name='delete'),
     path('edit/<uuid:id>', edit_product, name='edit'),
+    path('create-product-form-ajax', create_product_form_ajax, name='create-product-form-ajax'),
 ]

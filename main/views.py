@@ -14,11 +14,14 @@ from django.urls import reverse
 
 from django.contrib.auth.decorators import login_required
 
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
+
+from django.utils.html import strip_tags
+
 # Create your views here.
 @login_required(login_url='main:login')
 def show_main(request):
-    model = Product.objects.filter(user=request.user)
-
     cookie = request.COOKIES.get('last_login')
 
     if cookie:
@@ -29,30 +32,13 @@ def show_main(request):
     context = {
         'name': 'Andrew Devito Aryo',
         'app_name': 'Skibishop',
-        'products': model,
         'last_login': last_login
     }
 
     return render(request, 'index.html', context)
 
-
-@login_required(login_url="main:login")
-def create_product_form(request):
-    form = ProductEntryForm(request.POST or None)
-
-    if form.is_valid() and request.method == 'POST':
-        product_entry = form.save(commit=False)
-        product_entry.user = request.user
-        product_entry.save()
-        return redirect('main:show_main')
-    
-    context = {'form': form, 
-                'last_login': request.COOKIES.get('last_login')
-               }
-    return render(request, 'crud/create_product.html', context)
-
-def show_all_xml(_):
-    data = Product.objects.all()
+def show_all_xml(request):
+    data = Product.objects.filter(user=request.user)
 
     return HttpResponse(serializers.serialize("xml", data), content_type="application/xml")
 
@@ -60,8 +46,8 @@ def show_id_xml(_, id: str):
     data = Product.objects.filter(id=id)
     return HttpResponse(serializers.serialize("xml", data), content_type="application/xml")
 
-def show_all_json(_):
-    data = Product.objects.all()
+def show_all_json(request):
+    data = Product.objects.filter(user=request.user)
 
     return HttpResponse(serializers.serialize("json", data), content_type="application/json")
 
@@ -87,24 +73,27 @@ def register(request):
 
 
 def login_user(request):
-   if (request.user.is_authenticated):
-        return redirect('main:show_main')
-   
-   if request.method == 'POST':
-      form = AuthenticationForm(data=request.POST)
+    if (request.user.is_authenticated):
+            return redirect('main:show_main')
 
-      if form.is_valid():
+    if request.method == 'POST':
+        form = AuthenticationForm(data=request.POST)
+
+        if form.is_valid():
             user = form.get_user()
             login(request, user)
             response = HttpResponseRedirect(reverse('main:show_main'))
             response.set_cookie('last_login', datetime.datetime.now())
             return response
+        else:
+            messages.error(request, "Invalid username or password")
+        
 
-   else:
-      form = AuthenticationForm(request)
+    else:
+        form = AuthenticationForm(request)
 
-   context = {'form': form}
-   return render(request, 'auth/login.html', context)
+    context = {'form': form}
+    return render(request, 'auth/login.html', context)
 
 def logout_user(request):
     logout(request)
@@ -115,13 +104,51 @@ def logout_user(request):
 def show_profile(request):
     return render(request, 'profile.html')
 
+# CRUD Views
+@login_required(login_url="main:login")
+def create_product_form(request):
+    form = ProductEntryForm(request.POST or None)
+
+    if form.is_valid() and request.method == 'POST':
+        product_entry = form.save(commit=False)
+        product_entry.user = request.user
+        product_entry.save()
+        return redirect('main:show_main')
+    
+    context = {'form': form, 
+                'last_login': request.COOKIES.get('last_login')
+               }
+    return render(request, 'crud/create_product.html', context)
+
+@csrf_exempt
+@require_POST
+def create_product_form_ajax(request):
+    name = strip_tags(request.POST.get("name"))
+    price = strip_tags(request.POST.get("price"))
+    description = strip_tags(request.POST.get("description"))
+    user = request.user
+    
+    print(name, price, description, user)
+    
+    new_product = Product(
+        name = name,
+        price = price,
+        description = description,
+        user = user
+    )
+    
+    new_product.save()
+    
+    return HttpResponse(b"CREATED", status=201)
+    
+
 def delete_product(request, id):
     product = Product.objects.get(pk = id)
     product.delete()
     return HttpResponseRedirect(reverse('main:show_main'))
 
 def edit_product(request, id):
-    # Get mood entry berdasarkan id
+    # Get product entry berdasarkan id
     product = Product.objects.get(pk = id)
 
     # Set mood entry sebagai instance dari form
