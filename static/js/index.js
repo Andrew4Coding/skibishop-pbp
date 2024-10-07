@@ -20,6 +20,10 @@ async function refreshProducts() {
     else {
         classNameString="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10";
         products.forEach(product => {
+            const name = DOMPurify.sanitize(product.fields.name);
+            const price = DOMPurify.sanitize(product.fields.price);
+            const pk = DOMPurify.sanitize(product.pk);
+
             htmlString += `
                 <div
                     class="rounded-3xl w-full md:w-[260px] border-[1px] border-black/10 shadow-xl p-5 text-black hover:shadow-xl cursor-pointer transition-all duration-300 flex flex-col gap-5"
@@ -33,15 +37,15 @@ async function refreshProducts() {
                         <div
                             class="flex flex-col "
                         >
-                            <h3 class="m-0 font-medium text-sm">${ product.fields.name }</h3>
-                            <h1 class="m-0 text-xl font-bold">Rp${product.fields.price}</h1>
+                            <h3 class="m-0 font-medium text-sm">${ name }</h3>
+                            <h1 class="m-0 text-xl font-bold">Rp${ price }</h1>
                             <h3 class="m-0 font-medium text-sm text-[#737373]">by AndrewStore</h3>
                             <h3 class="font-medium text-sm">4k Terjual</h3>
                             <div class="flex my-2 gap-2" >
-                                <a href='edit/${product.pk}' class="w-full">
+                                <a href='edit/${ pk }' class="w-full">
                                     <button class="bg-[#7C00FE] w-full py-3 px-5 text-white text-sm font-semibold rounded-3xl h-full hover:scale-105 duration-300">Edit</button>
                                 </a>
-                                <a href='delete/${product.pk}' class="w-full">
+                                <a href='delete/${ pk }' class="w-full">
                                     <button class="bg-[#D91656] w-full py-3 px-5 text-white text-sm font-semibold rounded-3xl h-full hover:scale-105 duration-300">Delete</button>
                                 </a>
                             </div>

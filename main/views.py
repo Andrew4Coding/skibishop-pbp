@@ -128,8 +128,6 @@ def create_product_form_ajax(request):
     description = strip_tags(request.POST.get("description"))
     user = request.user
     
-    print(name, price, description, user)
-    
     new_product = Product(
         name = name,
         price = price,
@@ -152,7 +150,7 @@ def edit_product(request, id):
     product = Product.objects.get(pk = id)
 
     # Set mood entry sebagai instance dari form
-    form = productoductEntryForm(request.POST or None, instance=product)
+    form = ProductEntryForm(request.POST or None, instance=product)
 
     if form.is_valid() and request.method == "POST":
         # Simpan form dan kembali ke halaman awal
