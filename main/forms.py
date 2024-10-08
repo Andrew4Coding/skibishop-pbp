@@ -6,7 +6,7 @@ from django.utils.html import strip_tags
 class ProductEntryForm(ModelForm):
     class Meta:
         model = Product
-        fields = ['name', 'price', 'description']
+        fields = ['name', 'price', 'description', 'shop', 'image_url']
         
     def clean_name(self):
         name = self.cleaned_data['name']

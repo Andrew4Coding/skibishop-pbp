@@ -1,11 +1,14 @@
-<section class="w-full flex flex-col items-center gap-4 px-10 md:px-20 py-10">
+<section class="w-full flex flex-col items-center gap-4 px-10 md:px-20 py-10 mb-20">
     <div
-        class="flex flex-col-reverse md:flex-row gap-4 justify-end"
+        class="flex flex-col-reverse md:flex-row gap-4 justify-end items-center"
     >
         <a href="{% url 'main:create_product_form'%}">
             {% include "components/button.html" with text="+ Create" %}
         </a>
-        {% include "components/input.html" with class="w-full md:w-[500px]" %}
+        <input class="bg-[#F2F2F2] py-3 px-10 text-black placeholder:text-[#C9C9C9] focus:outline-none font-semibold placeholder:font-normal rounded-3xl justify-center w-full md:w-[500px]"
+            placeholder="Search product..."
+            id="search-bar"
+        >
         <button
             data-modal-target="crudModal"
             data-modal-toggle="crudModal"

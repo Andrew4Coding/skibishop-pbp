@@ -2,7 +2,7 @@
 {% block content %}
 {% include "components/navbar.html" %}
 <main
-  class="flex flex-col items-center justify-center w-screen h-screen px-5"
+  class="flex flex-col items-center justify-center w-screen min-h-screen px-5 my-20"
 >
   <div>
     <a href="{% url 'main:show_main' %}" class="self-start mb-5 text-[#7C00FE] hover:underline">
@@ -16,9 +16,8 @@
     <div
       class="shadow-xl bg-white p-5 sm:p-10 rounded-3xl flex flex-col gap-10 items-center border-[2px] border-black/5"
     >
-      <form method="POST" >
+      <form method="POST" class="grid grid-cols-1 lg:grid-cols-2 gap-5">
         {% csrf_token %}
-        <div>
            {% for field in form %}
               <div class="mb-5">
                   <span class="font-semibold" >
@@ -32,8 +31,7 @@
                       <p class="text-red-600">{{ error }}</p>
                   {% endfor %}
               </div>
-          {% endfor %}
-        </div>
+            {% endfor %}
         <button type="submit" class="bg-[#7C00FE] text-white font-semibold py-3 px-5 rounded-3xl hover:scale-105 duration-300 w-full">+ Create</button>
       </form>
     </div>

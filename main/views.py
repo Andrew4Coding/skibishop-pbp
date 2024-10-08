@@ -125,13 +125,18 @@ def create_product_form(request):
 def create_product_form_ajax(request):
     name = strip_tags(request.POST.get("name"))
     price = strip_tags(request.POST.get("price"))
-    description = strip_tags(request.POST.get("description"))
+    description = strip_tags(request.POST.get("description"))    
+    shop = strip_tags(request.POST.get("shop"))
+    image_url = strip_tags(request.POST.get("image_url"))
+    
     user = request.user
     
     new_product = Product(
         name = name,
         price = price,
         description = description,
+        shop = shop,
+        image_url = image_url,
         user = user
     )
     
