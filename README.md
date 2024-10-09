@@ -18,6 +18,7 @@ Check out the live version here: [Skibishop Webpage](http://andrew-devito-skibis
 - [Tugas 2 PBP 2024/2025](https://github.com/Andrew4Coding/skibishop-pbp/wiki/Tugas-2-PBP-2024-2025)
 - [Tugas 3 PBP 2024/2025](https://github.com/Andrew4Coding/skibishop-pbp/wiki/Tugas-3-PBP-2024-2025)
 - [Tugas 4 PBP 2024/2025](https://github.com/Andrew4Coding/skibishop-pbp/wiki/Tugas-4-PBP-2024-2025)
+- [Tugas 5 PBP 2024/2025](https://github.com/Andrew4Coding/skibishop-pbp/wiki/Tugas-5-PBP-2024-2025)
 ---
 
 ## Tugas 6 - PBP 2024/2025
@@ -49,9 +50,11 @@ Pembersihan data input pengguna di backend tetap dilakukan meskipun sudah ada va
 - **Keamanan:** Validasi dan pembersihan data di frontend dapat dilewati oleh pengguna yang memanipulasi request menggunakan query-query atau dengan menonaktifkan JavaScript. Backend lebih aman dikarenakan data diproses secara lebih "tersembunyi" jika dibandingkan dengan diproses di frontend.
 - **Integritas Data:** Backend bertanggung jawab untuk memastikan bahwa semua data yang masuk ke dalam sistem sesuai dengan aturan yang telah ditentukan. Jika hanya mengandalkan validasi frontend, data yang tidak valid bisa tetap masuk ke database. Misalnya, jika melakukan validasi nama yaitu hanya boleh 10 karakter melalui frontend (misalnya validasi form), timbul potensi serangan hacker yaitu dengan melakukan infiltrasi kepada API berupa mengirimkan nama dengan panjang 1000 karakter. Tentu hal ini bisa ditangani dengan baik jika diurus melalui database dan backend langsung.
 
-## Langkah-langkah Implementasi Checklist
-### 1. Ubahlah kode cards data mood agar dapat mendukung AJAX GET.
-Untuk mengubah GET menjadi AJAX, saya menambahkan view tambahan pada `views.py` yaitu:
+## Langkah-langkah Implementasi Checklist yang Diterapkan
+
+### 1. Mengubah Kode Kartu Data Produk agar Mendukung AJAX GET
+Untuk mengubah metode GET menjadi AJAX, saya menambahkan view khusus pada `views.py` sebagai berikut:
+
 ```python
 @csrf_exempt
 @require_POST
@@ -62,10 +65,10 @@ def create_product_form_ajax(request):
     user = request.user
     
     new_product = Product(
-        name = name,
-        price = price,
-        description = description,
-        user = user
+        name=name,
+        price=price,
+        description=description,
+        user=user
     )
     
     new_product.save()
@@ -73,16 +76,15 @@ def create_product_form_ajax(request):
     return HttpResponse(b"CREATED", status=201)
 ```
 
-View ini akan dipanggil melalui fetching javascript, oleh karena itu kita memerlukan sedikit modifikasi pada `urls.py`:
+View ini akan dipanggil melalui *fetching* JavaScript, sehingga saya juga perlu menambahkan rute baru pada `urls.py`:
+
 ```python
-  ...
-    path('create-ajax', create_product_form_ajax, name='create-ajax'),
-...
+path('create-ajax', create_product_form_ajax, name='create-ajax'),
 ```
 
-Kemudian, saya menghapus bagian yang me-mapping product. Bagian ini saya gantikan dengan sebuah div ber-id `product-container`. Div ini akan dimanipulasi secara DOM melalui script Javascript, yaitu dengan menambahkan fungsi berikut:
+Kemudian, saya memodifikasi tampilan HTML dengan menggantikan bagian yang sebelumnya memetakan produk dengan sebuah `div` ber-ID `product-container`. Div ini nantinya akan dimanipulasi menggunakan DOM melalui script JavaScript berikut:
+
 ```js
-....
 async function refreshProducts() {
     console.log("Refreshing products...");
     
@@ -90,46 +92,37 @@ async function refreshProducts() {
 
     const products = await getProducts();
 
-
     let htmlString = "";
     let classNameString = "";
 
     if (products.length === 0) {
         htmlString = "<p>No products found</p>";
-    }
-    else {
-        classNameString="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10";
+    } else {
+        classNameString = "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10";
         products.forEach(product => {
             const name = DOMPurify.sanitize(product.fields.name);
             const price = DOMPurify.sanitize(product.fields.price);
             const pk = DOMPurify.sanitize(product.pk);
 
             htmlString += `
-                <div
-                    class="rounded-3xl w-full md:w-[260px] border-[1px] border-black/10 shadow-xl p-5 text-black hover:shadow-xl cursor-pointer transition-all duration-300 flex flex-col gap-5"
-                >
+                <div class="rounded-3xl w-full md:w-[260px] border-[1px] border-black/10 shadow-xl p-5 text-black hover:shadow-xl cursor-pointer transition-all duration-300 flex flex-col gap-5">
                     <div class="w-full h-[200px] bg-[#F6F6F6] rounded-xl p-8 relative">
-                        <img
-                            src="https://pngimg.com/d/macbook_PNG61.png"
-                            class="w-full object-contain h-full rounded-xl"
-                        />
+                        <img src="https://pngimg.com/d/macbook_PNG61.png" class="w-full object-contain h-full rounded-xl" />
                     </div>
-                        <div
-                            class="flex flex-col "
-                        >
-                            <h3 class="m-0 font-medium text-sm">${ name }</h3>
-                            <h1 class="m-0 text-xl font-bold">Rp${ price }</h1>
-                            <h3 class="m-0 font-medium text-sm text-[#737373]">by AndrewStore</h3>
-                            <h3 class="font-medium text-sm">4k Terjual</h3>
-                            <div class="flex my-2 gap-2" >
-                                <a href='edit/${ pk }' class="w-full">
-                                    <button class="bg-[#7C00FE] w-full py-3 px-5 text-white text-sm font-semibold rounded-3xl h-full hover:scale-105 duration-300">Edit</button>
-                                </a>
-                                <a href='delete/${ pk }' class="w-full">
-                                    <button class="bg-[#D91656] w-full py-3 px-5 text-white text-sm font-semibold rounded-3xl h-full hover:scale-105 duration-300">Delete</button>
-                                </a>
-                            </div>
+                    <div class="flex flex-col">
+                        <h3 class="m-0 font-medium text-sm">${name}</h3>
+                        <h1 class="m-0 text-xl font-bold">Rp${price}</h1>
+                        <h3 class="m-0 font-medium text-sm text-[#737373]">by AndrewStore</h3>
+                        <h3 class="font-medium text-sm">4k Terjual</h3>
+                        <div class="flex my-2 gap-2">
+                            <a href='edit/${pk}' class="w-full">
+                                <button class="bg-[#7C00FE] w-full py-3 px-5 text-white text-sm font-semibold rounded-3xl h-full hover:scale-105 duration-300">Edit</button>
+                            </a>
+                            <a href='delete/${pk}' class="w-full">
+                                <button class="bg-[#D91656] w-full py-3 px-5 text-white text-sm font-semibold rounded-3xl h-full hover:scale-105 duration-300">Delete</button>
+                            </a>
                         </div>
+                    </div>
                 </div>
             `;
         });
@@ -140,36 +133,36 @@ async function refreshProducts() {
 }
 ```
 
-Fungsi ini akan melakukan fetching ke API product secara async. Jika data berhasil di fetch, maka tampilan dari view product akan diubah sehingga div dengan id `product-container` akan memuat product-product yang telah di fetch sebelumnya.
+Fungsi ini akan mengambil data produk secara asinkron dan memperbarui tampilan produk di halaman secara otomatis tanpa me-refresh halaman.
 
-### 2.  Lakukan pengambilan data mood menggunakan AJAX GET. Pastikan bahwa data yang diambil hanyalah data milik pengguna yang logged-in.
-Untuk menjamin data produk yang diambil melalui AJAX adalah kepunyaan user tertentu, kita perlu menambahkan argument `user=user` pada view `create_product_form_ajax`:
+### 2. Mengambil Data Produk Milik Pengguna Tertentu Menggunakan AJAX GET
+Agar data produk yang diambil melalui AJAX hanya milik pengguna yang sedang login, saya memastikan produk yang ditambahkan dikaitkan dengan pengguna tersebut pada view `create_product_form_ajax`:
+
 ```python
-...
-    new_product = Product(
-        name = name,
-        price = price,
-        description = description,
-        user = user
-    )
-... 
+new_product = Product(
+    name=name,
+    price=price,
+    description=description,
+    user=request.user  # Pastikan hanya produk milik pengguna ditampilkan
+)
 ```
 
-### 3. Buatlah sebuah tombol yang membuka sebuah modal dengan form untuk menambahkan mood.
-Pertama, saya membuat button yang jika diklik akan membuka modal. Button ini terletak di `products.html` tepatnya pada bagian:
+### 3. Membuat Tombol untuk Membuka Modal dengan Form Tambah Produk
+Langkah berikutnya adalah membuat tombol yang saat diklik akan membuka modal. Tombol ini diletakkan di dalam file `products.html`:
+
 ```html
-    <button
-        data-modal-target="crudModal"
-        data-modal-toggle="crudModal"
-        class='bg-[#7C00FE] w-fit py-3 px-10 text-white text-sm font-semibold rounded-3xl h-full hover:scale-105 duration-300'
-        onclick="showModal();"
-    >
-        + Create (AJAX)
-    </button>
+<button
+    data-modal-target="crudModal"
+    data-modal-toggle="crudModal"
+    class="bg-[#7C00FE] w-fit py-3 px-10 text-white text-sm font-semibold rounded-3xl h-full hover:scale-105 duration-300"
+    onclick="showModal();"
+>
+    + Create (AJAX)
+</button>
 ```
 
-Jika button diklik, maka sebuah modal akan terbuka. HTML dari modal diletakkan pada file `create_product_modal.html` dan akan dipanggil melalui include di `product.html`
-Kemudian, kita memerlukan semacam logika untuk membuka dan menutup modal. Berikut kode javascript untuk membuka dan menutup modal:
+HTML untuk modal diletakkan dalam file terpisah `create_product_modal.html`, dan dimasukkan melalui `include` di file `product.html`. Berikut adalah logika untuk membuka dan menutup modal:
+
 ```js
 function showModal() {
     const modal = document.getElementById('crudModal');
@@ -200,16 +193,16 @@ document.getElementById("closeModalBtn").addEventListener("click", hideModal);
 document.getElementById("submitProductEntry").onclick = addProduct;
 ```
 
-fungsi `hideModal()` digunakan untuk menutup modal, sedangkan fungsi `showModal()` digunakan untuk membuka modal. Selain itu, saya juga menambahkan logika jika cancel, close, dan submit button di klik.
+Fungsi `showModal()` akan menampilkan modal, sedangkan `hideModal()` menutup modal. Saya juga menambahkan logika agar modal ditutup saat tombol cancel atau close diklik.
 
-### 4. Buatlah fungsi view baru untuk menambahkan mood baru ke dalam basis data.
-Seperti yang telah dijelaskan sebelumnya, saya mengimplementasikan ini melalui menambahkan view `create_product_form_ajax`
+### 4. Membuat Fungsi View untuk Menambahkan Produk Baru ke Database
+Fungsi untuk menambahkan produk baru sudah diimplementasikan pada langkah pertama menggunakan `create_product_form_ajax`.
 
-### 5. Buatlah path /create-ajax/ yang mengarah ke fungsi view yang baru kamu buat.
-Untuk mengimplementasi ini, saya membuat view dan menambahkan path pada `urls.py` (seperti yang telah dijelaskan sebelumnya)
+### 5. Membuat Path /create-ajax/ untuk Fungsi View Baru
+Path untuk view yang baru sudah ditambahkan di `urls.py` seperti yang dijelaskan di langkah pertama.
 
-### 6. Hubungkan form yang telah kamu buat di dalam modal kamu ke path /create-ajax/.
-Form dalam modal akan dihubungkan ke path `/create-ajax/` melalui fetch() yang ada di dalam fungsi `addProduct()`
+### 6. Menghubungkan Form di Modal dengan Path /create-ajax/
+Form di dalam modal akan dihubungkan ke path `/create-ajax/` melalui fungsi `addProduct()` menggunakan `fetch()`.
 
-### 7. Lakukan refresh pada halaman utama secara asinkronus untuk menampilkan daftar mood terbaru tanpa reload halaman utama secara keseluruhan.
-Kita tidak perlu melakukan refresh lagi setiap kali data ditambahkan, karena data sudah di GET secara async dan akan langsung di show tanpa melalui refresh
+### 7. Melakukan Refresh Tampilan Produk Secara Asinkronus Tanpa Reload Halaman
+Setelah produk baru ditambahkan, tampilan daftar produk akan diperbarui secara otomatis tanpa memerlukan *reload* halaman, karena pengambilan data produk dilakukan secara asinkronus menggunakan AJAX.
