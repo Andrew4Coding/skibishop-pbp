@@ -140,7 +140,10 @@ def create_product_form_ajax(request):
         user = user
     )
     
-    new_product.save()
+    if (name == "" or price == "" or description == "" or shop == "" or image_url == ""):
+        return HttpResponse(b"BAD REQUEST", status=400)
+    else:    
+        new_product.save()
     
     return HttpResponse(b"CREATED", status=201)
     
