@@ -19,6 +19,10 @@ from django.views.decorators.http import require_POST
 
 from django.utils.html import strip_tags
 
+from django.views.decorators.csrf import csrf_exempt
+import json
+from django.http import JsonResponse
+
 # Create your views here.
 @login_required(login_url='main:login')
 def show_main(request):
@@ -170,3 +174,25 @@ def edit_product(request, id):
         'last_login': request.COOKIES.get('last_login')
     }
     return render(request, "crud/edit_product.html", context)
+
+
+
+@csrf_exempt
+def create_product_flutter(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        new_prod = Product.objects.create(
+            user=request.user,
+            name=data["name"],
+            price=data["price"],
+            description=data["description"],
+            image_url=data["image_url"],
+            shop=data["shop"],
+            sold=data.get("sold", 0)
+        )
+
+        new_prod.save()
+
+        return JsonResponse({"status": "success"}, status=200)
+    else:
+        return JsonResponse({"status": "error"}, status=401)

@@ -1,5 +1,8 @@
 async function getProducts() { 
-    const res = await fetch(`${window.location.href}json`).then(response => response.json()).catch(error => console.error(error));
+    const res = await fetch(`${window.location.href}json`).then(response => {
+        console.log(response.status)
+        response.json()
+    }).catch(error => console.error(error));
     return res;
 }
 
@@ -63,12 +66,15 @@ async function refreshProducts() {
     document.getElementById("product-container").innerHTML = htmlString;
 }
 
+
+
 function addProduct() { 
     fetch(`${window.location.href}create-ajax`, {
         method: "POST",
         body: new FormData(document.querySelector('#productEntryForm')),
     })
         .then(response => {
+            console.log(response.status);
             if (response.ok) {
                 refreshProducts();
                 hideModal();
@@ -84,7 +90,6 @@ function addProduct() {
     
     document.getElementById("productEntryForm").reset();
     document.querySelector("[data-modal-toggle='crudModal']").click();
-
 
     return false;
 }
